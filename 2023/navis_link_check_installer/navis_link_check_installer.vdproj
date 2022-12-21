@@ -1721,7 +1721,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:navis_link_checker"
         "ProductCode" = "8:{E5B5EA00-FC3C-4480-A94D-53A5EF4BE585}"
-        "PackageCode" = "8:{EF43BBD2-E13D-4610-9E97-AB08AFBAB8DA}"
+        "PackageCode" = "8:{C5CD2911-4D83-45F4-ACA8-DD474A4086D2}"
         "UpgradeCode" = "8:{DC34A33E-7D33-4033-997B-04659E368A00}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
