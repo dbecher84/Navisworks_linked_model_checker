@@ -9,6 +9,8 @@ namespace Navis_Model_Check
 {
     public partial class writecsv
     {
+        ////classe to write model names to csv file
+        ////inputs list of file names as string and filepath as string
         public static void writeToCsv(List<string> inputList, string filepath)
         {
             StringBuilder csvInfo = new StringBuilder();

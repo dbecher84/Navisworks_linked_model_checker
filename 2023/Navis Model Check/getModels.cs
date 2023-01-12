@@ -10,6 +10,9 @@ namespace Navis_Model_Check
 {
     public partial class getmodels
     {
+        ////class to get list of models from navis file
+        ////inputs active navis document
+
         public static List<string> getnavismodels(Document navisDoc)
         {
             navisDoc.CurrentSelection.SelectAll();

@@ -21,7 +21,7 @@ namespace Navis_Model_Check
     public class Models : AddInPlugin
     {
 
-        //// public static make this available in all cs files using Models.path or Models.document
+        //// public static make these available in all cs files. example = Models.path or Models.document
         public static string path1 = @"C:\ProgramData\Autodesk\IPS Navis Model Check\Model List\";
         public static string path2 = "model_list.csv";
         public static Document document = Autodesk.Navisworks.Api.Application.ActiveDocument;
@@ -29,11 +29,15 @@ namespace Navis_Model_Check
 
         public override int Execute(params string[] parameters)
         {
+            ////search file path forr 5 digit project number for namine csv file////////
             var regMatchNum = @"([0-9]{5})";
             Match regMatchnum = Regex.Match(nFilePath, regMatchNum);
             string projectNum = regMatchnum.Value;
+            ////////////////////////////////////////////////////////////////////////////
 
+            ////csv file path//////////////////////////////////////////////////////////
             string path = path1 + @"\" + projectNum + path2;
+            ///////////////////////////////////////////////////////////////////////////
 
             //string date = DateTime.Now.ToString("yyyy.MM.dd");
 
@@ -52,7 +56,10 @@ namespace Navis_Model_Check
             //    //workingCollection2.AddRange(item.Children);
             //}
 
+            ////class to get list of models from navis file//////////////////////////////
             List<string> navisModels = getmodels.getnavismodels(document);
+            /////////////////////////////////////////////////////////////////////////////
+            
             //MessageBox.Show(workingCollection2.Count.ToString(), "item count collection 2");
             //MessageBox.Show(string.Join(", ", navisModels), "files found in model");
 
@@ -63,11 +70,11 @@ namespace Navis_Model_Check
                 //write model list to file
                 MessageBox.Show("No file with a model list is present. One will be created a populated with the current list of models.", "File not Found");
                 //StringBuilder csvInfo = new StringBuilder();
-                ////string[] headers = { "fileName", "date" };
-                ////csvInfo.AppendLine(string.Join(",", headers));
-                ////File.WriteAllText(path, csvheaders.ToString());
+                //string[] headers = { "fileName", "date" };
+                //csvInfo.AppendLine(string.Join(",", headers));
+                //File.WriteAllText(path, csvheaders.ToString());
 
-                ////var sb = new StringBuilder();
+                //var sb = new StringBuilder();
 
                 //foreach (string mName in navisModels)
                 //{
@@ -77,9 +84,9 @@ namespace Navis_Model_Check
                 //MessMessageBox.Show(string.Join(", ", sb));
                 try
                 {
+                    ////classe to write model names to csv file/////////
                     writecsv.writeToCsv(navisModels, path);
-                    //File.WriteAllText(path, csvInfo.ToString());
-                    //MessageBox.Show(string.Join(", ", csvInfo), "Info saved to CSV.");
+                    ////////////////////////////////////////////////////
                 }
                 catch (Exception ex)
                 {
@@ -99,10 +106,6 @@ namespace Navis_Model_Check
             }
             else
             {
-                //check current list to existing file
-                //display changes
-                //write new list of files if ok
-                //MessageBox.Show("Files found", "file ?");
                 string[] modelsFromFile = File.ReadAllLines(path);
 
                 List<string> csvModels = new List<string>();
@@ -112,8 +115,10 @@ namespace Navis_Model_Check
                     csvModels.Add(item);
                 }
 
+                ////form to display list of models from saved csv and list of models found in navisworks///
                 var displayForm = new model_compare(csvModels, navisModels);
                 displayForm.ShowDialog();
+                ///////////////////////////////////////////////////////////////////////////////////////////
             }
 
             return 0;
