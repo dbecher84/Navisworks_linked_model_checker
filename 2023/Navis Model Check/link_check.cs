@@ -29,98 +29,123 @@ namespace Navis_Model_Check
 
         public override int Execute(params string[] parameters)
         {
-            ////search file path forr 5 digit project number for namine csv file////////
-            var regMatchNum = @"([0-9]{5})";
-            Match regMatchnum = Regex.Match(nFilePath, regMatchNum);
-            string projectNum = regMatchnum.Value;
+            ////search file path forr 5 digit project number for csv file name////////
+            //var regMatchNum = @"([0-9]{5})";
+            //Match regMatchnum = Regex.Match(nFilePath, regMatchNum);
+            //string projectNum = regMatchnum.Value;
             ////////////////////////////////////////////////////////////////////////////
 
-            ////csv file path//////////////////////////////////////////////////////////
-            string path = path1 + @"\" + projectNum + path2;
-            ///////////////////////////////////////////////////////////////////////////
-
-            //string date = DateTime.Now.ToString("yyyy.MM.dd");
-
-            //Document document = Autodesk.Navisworks.Api.Application.ActiveDocument;
-
-            //document.CurrentSelection.SelectAll();
-
-            ////ModelItemCollection workingCollection2 = new ModelItemCollection();
-
-            //List<string> navisModels = new List<string>();
-
-            //foreach (ModelItem item in document.CurrentSelection.SelectedItems)
-            //{
-            //    string name = item.DisplayName;
-            //    navisModels.Add(name);
-            //    //workingCollection2.AddRange(item.Children);
-            //}
-
-            ////class to get list of models from navis file//////////////////////////////
-            List<string> navisModels = getmodels.getnavismodels(document);
-            /////////////////////////////////////////////////////////////////////////////
-            
-            //MessageBox.Show(workingCollection2.Count.ToString(), "item count collection 2");
-            //MessageBox.Show(string.Join(", ", navisModels), "files found in model");
-
-
-            if (File.Exists(path) != true)
+            ////use entire navis file name to account for multiple buildings///////////
+            try
             {
-                //create file
-                //write model list to file
-                MessageBox.Show("No file with a model list is present. One will be created a populated with the current list of models.", "File not Found");
-                //StringBuilder csvInfo = new StringBuilder();
-                //string[] headers = { "fileName", "date" };
-                //csvInfo.AppendLine(string.Join(",", headers));
-                //File.WriteAllText(path, csvheaders.ToString());
+                string navisFilePath = Autodesk.Navisworks.Api.Application.MainDocument.FileName.ToString();
+                int startPosition = navisFilePath.LastIndexOf("\\") + 1;
+                int endPosition = navisFilePath.LastIndexOf(".");
+                string modelName = navisFilePath.Substring(startPosition, endPosition - startPosition);
 
-                //var sb = new StringBuilder();
+                /////////////////////////////////////////////////////////////////////////////
 
-                //foreach (string mName in navisModels)
-                //{
-                //    string[] info = { mName };
-                //    csvInfo.AppendLine(string.Join(",", info));
-                //}
-                //MessMessageBox.Show(string.Join(", ", sb));
+                ////csv file path//////////////////////////////////////////////////////////
+                string path = path1 + @"\" + modelName + path2;
+                ///////////////////////////////////////////////////////////////////////////
+
+                //////////////////////////////////////////////////////////////////////////
                 try
                 {
-                    ////classe to write model names to csv file/////////
-                    writecsv.writeToCsv(navisModels, path);
-                    ////////////////////////////////////////////////////
+                    System.IO.Directory.CreateDirectory(path1);
                 }
-                catch (Exception ex)
+                catch (Exception e_csv)
                 {
-                    MessageBox.Show(ex.ToString(), "error");
+                    MessageBox.Show(e_csv.ToString(), "error creating folder for csv");
                 }
+                ///////////////////////////////////////////////////////////////////////////
+                //string date = DateTime.Now.ToString("yyyy.MM.dd");
 
-                string[] modelsFromFile = File.ReadAllLines(path);
+                //Document document = Autodesk.Navisworks.Api.Application.ActiveDocument;
 
-                List<string> csvModels = new List<string>();
-                foreach (string item in modelsFromFile)
+                //document.CurrentSelection.SelectAll();
+
+                ////ModelItemCollection workingCollection2 = new ModelItemCollection();
+
+                //List<string> navisModels = new List<string>();
+
+                //foreach (ModelItem item in document.CurrentSelection.SelectedItems)
+                //{
+                //    string name = item.DisplayName;
+                //    navisModels.Add(name);
+                //    //workingCollection2.AddRange(item.Children);
+                //}
+
+                ////class to get list of models from navis file//////////////////////////////
+                List<string> navisModels = getmodels.getnavismodels(document);
+                /////////////////////////////////////////////////////////////////////////////
+
+                //MessageBox.Show(workingCollection2.Count.ToString(), "item count collection 2");
+                //MessageBox.Show(string.Join(", ", navisModels), "files found in model");
+
+
+                if (File.Exists(path) != true)
                 {
-                    //MessageBox.Show(item, "model name to list");
-                    csvModels.Add(item);
+                    //create file
+                    //write model list to file
+                    MessageBox.Show("No file with a model list is present. One will be created a populated with the current list of models.", "File not Found");
+                    //StringBuilder csvInfo = new StringBuilder();
+                    //string[] headers = { "fileName", "date" };
+                    //csvInfo.AppendLine(string.Join(",", headers));
+                    //File.WriteAllText(path, csvheaders.ToString());
+
+                    //var sb = new StringBuilder();
+
+                    //foreach (string mName in navisModels)
+                    //{
+                    //    string[] info = { mName };
+                    //    csvInfo.AppendLine(string.Join(",", info));
+                    //}
+                    //MessMessageBox.Show(string.Join(", ", sb));
+                    try
+                    {
+                        ////classe to write model names to csv file/////////
+                        writecsv.writeToCsv(navisModels, path);
+                        ////////////////////////////////////////////////////
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString(), "error");
+                    }
+
+                    string[] modelsFromFile = File.ReadAllLines(path);
+
+                    List<string> csvModels = new List<string>();
+                    foreach (string item in modelsFromFile)
+                    {
+                        //MessageBox.Show(item, "model name to list");
+                        csvModels.Add(item);
+                    }
+                    var displayForm = new model_compare(csvModels, navisModels);
+                    displayForm.ShowDialog();
                 }
-                var displayForm = new model_compare(csvModels, navisModels);
-                displayForm.ShowDialog();
+                else
+                {
+                    string[] modelsFromFile = File.ReadAllLines(path);
+
+                    List<string> csvModels = new List<string>();
+                    foreach (string item in modelsFromFile)
+                    {
+                        //MessageBox.Show(item, "model name to list");
+                        csvModels.Add(item);
+                    }
+
+                    ////form to display list of models from saved csv and list of models found in navisworks///
+                    var displayForm = new model_compare(csvModels, navisModels);
+                    displayForm.ShowDialog();
+                    ///////////////////////////////////////////////////////////////////////////////////////////
+                }
             }
-            else
+            catch (Exception e_modelName)
             {
-                string[] modelsFromFile = File.ReadAllLines(path);
-
-                List<string> csvModels = new List<string>();
-                foreach (string item in modelsFromFile)
-                {
-                    //MessageBox.Show(item, "model name to list");
-                    csvModels.Add(item);
-                }
-
-                ////form to display list of models from saved csv and list of models found in navisworks///
-                var displayForm = new model_compare(csvModels, navisModels);
-                displayForm.ShowDialog();
-                ///////////////////////////////////////////////////////////////////////////////////////////
+                MessageBox.Show(e_modelName.ToString(), "error fetching model name");
             }
-
+           
             return 0;
         }
     }

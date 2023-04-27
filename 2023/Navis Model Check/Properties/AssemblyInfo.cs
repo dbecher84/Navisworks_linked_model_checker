@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IPS-Integrated Project Services LLC")]
 [assembly: AssemblyProduct("Navis Model Check")]
-[assembly: AssemblyCopyright("Copyright © IPS-Integrated Project Services LLC 2022")]
+[assembly: AssemblyCopyright("Copyright © IPS-Integrated Project Services LLC 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

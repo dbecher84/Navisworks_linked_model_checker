@@ -736,6 +736,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -1719,20 +1727,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:navis_link_checker"
+        "ProductName" = "8:IPS Navisworks Link Check Utility"
         "ProductCode" = "8:{E5B5EA00-FC3C-4480-A94D-53A5EF4BE585}"
-        "PackageCode" = "8:{C5CD2911-4D83-45F4-ACA8-DD474A4086D2}"
+        "PackageCode" = "8:{BBD18172-DC6F-4D5C-914D-C45A978618F8}"
         "UpgradeCode" = "8:{DC34A33E-7D33-4033-997B-04659E368A00}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:IPS-Integrated Project Services LLC"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:navis_link_checker"
+        "Title" = "8:IPS Navisworks Link Check Utility"
         "Subject" = "8:"
         "ARPCONTACT" = "8:IPS-Integrated Project Services LLC"
         "Keywords" = "8:"
